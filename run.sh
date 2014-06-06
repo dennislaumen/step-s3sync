@@ -33,14 +33,12 @@ then
     if [ ! $WERCKER_S3SYNC_EXPERIMENTAL ] ; then
         wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | sudo apt-key add -
         sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
-        sudo apt-get update && sudo apt-get install s3cmd
     else
-        sudo apt-get install python-setuptools
-        wget http://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.0-beta1/s3cmd-1.5.0-beta1.tar.gz
-        tar xvfz s3cmd-1.5.0-beta1.tar.gz
-        cd s3cmd-1.5.0-beta1
-        python setup.py install
+        sudo apt-get update && sudo apt-get install python-software-properties software-properties-common
+        sudo add-apt-repository ppa:presslabs -y
     fi
+
+    sudo apt-get update && sudo apt-get install s3cmd
 
     success 's3cmd installed succesfully'
 else
