@@ -16,6 +16,11 @@ then
     fail 'missing or empty option bucket_url, please check wercker.yml'
 fi
 
+if [ ! -n "$WERCKER_S3SYNC_EXPERIMENTAL" ]
+then
+    export WERCKER_S3SYNC_EXPERIMENTAL=false
+fi
+
 if [ ! -n "$WERCKER_S3SYNC_OPTS" ]
 then
     export WERCKER_S3SYNC_OPTS="--acl-public"
@@ -24,9 +29,16 @@ fi
 if ! type s3cmd &> /dev/null ;
 then
     info 's3cmd not found, start installing it'
-    wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | sudo apt-key add -
-    sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
+
+    if [ ! $WERCKER_S3SYNC_EXPERIMENTAL ] ; then
+        wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | sudo apt-key add -
+        sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
+    else
+        echo 'deb http://ftp.debian.org/debian experimental main' > /etc/apt/sources.list.d/debian-experimental.list
+    fi
+
     sudo apt-get update && sudo apt-get install s3cmd
+
     success 's3cmd installed succesfully'
 else
     info 'skip s3cmd install, command already available'
