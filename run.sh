@@ -33,12 +33,14 @@ then
     if [ ! $WERCKER_S3SYNC_EXPERIMENTAL ] ; then
         wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | sudo apt-key add -
         sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
+        sudo apt-get update && sudo apt-get install s3cmd
     else
-        wget -O- -q https://ftp-master.debian.org/keys/archive-key-7.0.asc | sudo apt-key add -
-        sudo sh -c 'echo "deb http://ftp.debian.org/debian experimental main" > /etc/apt/sources.list.d/debian-experimental.list'
+        sudo apt-get install python-setuptools
+        wget http://downloads.sourceforge.net/project/s3tools/s3cmd/1.5.0-beta1/s3cmd-1.5.0-beta1.tar.gz
+        tar xvfz s3cmd-1.5.0-beta1.tar.gz
+        cd s3cmd-1.5.0-beta1
+        python setup.py install
     fi
-
-    sudo apt-get update && sudo apt-get install s3cmd
 
     success 's3cmd installed succesfully'
 else
