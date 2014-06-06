@@ -34,6 +34,7 @@ then
         wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | sudo apt-key add -
         sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
     else
+        wget -O- -q https://ftp-master.debian.org/keys/archive-key-7.0.asc | sudo apt-key add -
         sudo sh -c 'echo "deb http://ftp.debian.org/debian experimental main" > /etc/apt/sources.list.d/debian-experimental.list'
     fi
 
