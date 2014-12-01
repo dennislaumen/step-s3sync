@@ -44,7 +44,7 @@ then
         wget -O- -q http://s3tools.org/repo/deb-all/stable/s3tools.key | sudo apt-key add -
         sudo wget -O/etc/apt/sources.list.d/s3tools.list http://s3tools.org/repo/deb-all/stable/s3tools.list
     else
-        sudo apt-get update && sudo apt-get install python-software-properties software-properties-common
+        sudo apt-get update && sudo apt-get install python-software-properties python-dateutil software-properties-common
         sudo add-apt-repository ppa:presslabs -y
     fi
 
