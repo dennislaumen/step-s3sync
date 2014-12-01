@@ -26,6 +26,16 @@ then
     export WERCKER_S3SYNC_OPTS="--acl-public"
 fi
 
+if [ -n "$WERCKER_S3SYNC_DELETE_REMOVED" ]; then
+    if [ "$WERCKER_S3SYNC_DELETE_REMOVED" = "true" ]; then
+        export WERCKER_S3SYNC_DELETE_REMOVED="--delete-removed"
+    else
+        unset WERCKER_S3SYNC_DELETE_REMOVED
+    fi
+else
+    export WERCKER_S3SYNC_DELETE_REMOVED="--delete-removed"
+fi
+
 if ! type s3cmd &> /dev/null ;
 then
     info 's3cmd not found, start installing it'
@@ -67,12 +77,12 @@ fi
 info 'starting s3 synchronisation'
 
 set +e
-SYNC="s3cmd sync $WERCKER_S3SYNC_OPTS --delete-removed --verbose ./ $WERCKER_S3SYNC_BUCKET_URL"
+SYNC="s3cmd sync $WERCKER_S3SYNC_OPTS $WERCKER_S3SYNC_DELETE_REMOVED --verbose ./ $WERCKER_S3SYNC_BUCKET_URL"
 debug "$SYNC"
 sync_output=$($SYNC)
 
 if [[ $? -ne 0 ]];then
-    warning $sync_output
+    warn $sync_output
     fail 's3cmd failed';
 else
     success 'finished s3 synchronisation';
