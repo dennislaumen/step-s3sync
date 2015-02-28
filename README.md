@@ -19,6 +19,7 @@ It is recommended that you use application and deployment variables in wercker, 
 * `bucket-url` (required) The url of the bucket to sync to, like: `s3://wercker.com`
 * `source-dir` (optional, default: `./`) The directory to sync to the remote bucket.
 * `delete-removed` (optional, default: `true`) Add `--delete-remove` flag if this is `true`.
+* `experimental` (optional, default: `false`) If true, installs and uses the experimental version which has more options which can be used via `opts`.
 * `opts` (optional, default: `--acl-public`) Arbitrary options provided to s3cmd. See `s3cmd --help` for more.
 
 # Example
